@@ -1,6 +1,7 @@
 %include "../../lib/pc_io.inc"   ; incluir declaraciones de procedimiento externos
 
 section .data
+    bskey equ 0x7F
     lencadena equ 255
     ln equ 0x0A
     nline db ln,0
@@ -17,7 +18,9 @@ _start:
    
     ; --- IMPRIMIR CADENA  ---
     mov edx, msg1        
-    call puts           
+    call puts   
+    call captura    
+    call captura        
     jmp .fin_programa  
     
     
@@ -31,4 +34,24 @@ _start:
 	    xor ebx, ebx          ; return 0
         int 0x80              ; Fin de programa
 
+   
+    captura:
+            push ax
+            call getch
+            cmp al, bskey
+            jne .sig
+            call borrar
+    .sig:   call putchar
+            pop ax
+            ret
 
+    borrar:
+        push ax 
+        mov al,0x8
+        call putchar    
+        mov al,' '
+        call putchar
+        mov al,0x8
+        call putchar   
+        pop ax
+        ret 
