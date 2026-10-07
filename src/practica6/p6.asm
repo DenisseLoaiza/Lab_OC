@@ -1,8 +1,14 @@
 %include "../../lib/pc_io.inc"   ; incluir declaraciones de procedimiento externos
 
-
+section .data
+    lencadena equ 255
+    ln equ 0x0A
+    nline db ln,0
+    msg1 db ln,'Captura: ', 0
+    msg2 db ln,'Cadena: ', 0
+    
 section .bss
-    cedena resb 255
+    cadena resb lencadena
 
 section .text
     global _start         ; referencia para inicio de programa
@@ -18,7 +24,7 @@ _start:
     
     ; --- FIN DE PROGRAMA ---
     .fin_programa: 
-        mov edx, salto    
+        mov edx, nline    
         call puts     
         call puts     
         mov eax, 1            ; Llamada sys_exit
@@ -26,8 +32,3 @@ _start:
         int 0x80              ; Fin de programa
 
 
-section .data
-    lencadena equ 255
-    msg1 db 0xa,'Captura: ', 0
-    msg2 db 0xa,'Cadena: ', 0
-    salto db 0xa
